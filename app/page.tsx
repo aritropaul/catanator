@@ -8,6 +8,7 @@ import { Tile } from '@/components/ui/tile'
 import { useEffect, useState } from 'react';
 import { generateMap } from '@/lib/catan';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 interface TileType {
   type: String
@@ -102,7 +103,7 @@ export default function Home() {
           </div>
           <Button className='dark bg-neutral-900 text-neutral-200 hover:bg-neutral-900 border-none px-0 font-normal' variant="link" onClick={handleClick}>generate catan board</Button>
         </div> 
-        <div className="w-full py-20 justify-center items-center inline-flex">
+        <div className="w-full pt-20 pb-12 justify-center items-center inline-flex">
           <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 md:space-x-[-20px] space-x-[-12px]">
             <div className="flex-col justify-start items-start gap-1.5 inline-flex">
               {
@@ -166,6 +167,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <div className='footer text-xs text-neutral-600'>Built with 🤍 by <Link className='text-neutral-200 underline' href={'https://aritro.xyz'}>aritro</Link></div>
     </main>
   )
 }
