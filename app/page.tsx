@@ -91,9 +91,8 @@ export default function Home() {
   
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-neutral-900">
-      <div className="w-[600px]">
-        <div className='inline-flex items-center justify-between w-full text-white font-normal'>
-          <Button className='dark bg-neutral-900 text-neutral-200 hover:bg-neutral-900 border-none px-0 font-normal' variant="link" onClick={handleClick}>generate catan board</Button>
+      <div className="lg:w-[600px] w-[390px] md:w-[480px]">
+        <div className='md:inline-flex items-center justify-between w-full text-white font-normal md:px-0 px-4'>
           <div className="flex items-center space-x-2 text">
             {mode==true && <Label className='font-normal text-neutral-50' htmlFor="normal">normal game</Label>}
             {mode==false && <Label className='font-normal text-neutral-700' htmlFor="normal">normal game</Label>}
@@ -101,9 +100,10 @@ export default function Home() {
             {mode==true && <Label className='font-normal text-neutral-700' htmlFor="expansion">expansion mode</Label>}
             {mode==false && <Label className='font-normal text-neutral-50' htmlFor="expansion">expansion mode</Label>}
           </div>
+          <Button className='dark bg-neutral-900 text-neutral-200 hover:bg-neutral-900 border-none px-0 font-normal' variant="link" onClick={handleClick}>generate catan board</Button>
         </div> 
         <div className="w-full py-20 justify-center items-center inline-flex">
-          <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 space-x-[-20px]">
+          <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 md:space-x-[-20px] space-x-[-12px]">
             <div className="flex-col justify-start items-start gap-1.5 inline-flex">
               {
                 row1.map((item) => {
