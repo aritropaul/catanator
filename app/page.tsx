@@ -91,7 +91,7 @@ export default function Home() {
   }
   
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-neutral-900">
+    <main className="flex min-h-screen flex-col items-center justify-between md:p-24 p-12 bg-neutral-900">
       <div className="lg:w-[600px] w-[390px] md:w-[480px]">
         <div className='md:inline-flex items-center justify-between w-full text-white font-normal md:px-0 px-4'>
           <div className="flex items-center space-x-2 text">
@@ -167,7 +167,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className='footer text-xs text-neutral-600'>Built with 🤍 by <Link className='text-neutral-200 underline' href={'https://aritro.xyz'}>aritro</Link></div>
+      <div className='footer text-xs bottom-20 text-neutral-600'>Built with 🤍 by <Link className='text-neutral-200 underline' href={'https://aritro.xyz'}>aritro</Link></div>
     </main>
   )
 }
