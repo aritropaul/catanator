@@ -2,8 +2,15 @@
 
 import Image from 'next/image'
 
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Tile } from '@/components/ui/tile'
 import { useEffect, useState } from 'react';
 import { generateMap } from '@/lib/catan';
@@ -17,7 +24,7 @@ interface TileType {
 
 export default function Home() {
 
-  const [mode, setMode] = useState(true)
+  const [mode, setMode] = useState("")
   const mapData = [
     {type: "Placeholder", num: -1},
     {type: "Placeholder", num: -2},
@@ -58,9 +65,8 @@ export default function Home() {
   const [row6, setRow6] = useState(mapData.slice(23,27))
   const [row7, setRow7] = useState(mapData.slice(27,30))
 
-  function switched(mode: Boolean) {
-    if (mode == false) { setMode(true) }
-    if (mode == true) { setMode(false) }
+  function switched(mode: string) {
+      setMode(mode)
       setRow1(mapData.slice(0,3))
       setRow2(mapData.slice(3,7))
       setRow3(mapData.slice(7,12))
@@ -73,14 +79,14 @@ export default function Home() {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const newData = generateMap(mode) || []
     if (newData.length > 0) {
-      if (mode == true) {
+      if (mode == 'catan') {
         setRow1(newData[0])
         setRow2(newData[1])
         setRow3(newData[2])
         setRow6(newData[3])
         setRow7(newData[4])
       }
-      if (mode == false) {
+      if (mode == 'expansion-catan') {
         setRow1(newData[0])
         setRow2(newData[1])
         setRow3(newData[2])
@@ -97,11 +103,20 @@ export default function Home() {
       <div className="lg:w-[600px] w-[390px] md:w-[480px]">
         <div className='md:inline-flex items-center justify-between w-full text-white font-normal md:px-0 px-4'>
           <div className="flex items-center space-x-2 text">
-            {mode==true && <Label className='font-normal text-neutral-50' htmlFor="normal">normal game</Label>}
-            {mode==false && <Label className='font-normal text-neutral-700' htmlFor="normal">normal game</Label>}
-            <Switch className='dark' id="mode" onCheckedChange={switched} />
-            {mode==true && <Label className='font-normal text-neutral-700' htmlFor="expansion">expansion mode</Label>}
-            {mode==false && <Label className='font-normal text-neutral-50' htmlFor="expansion">expansion mode</Label>}
+          <Select onValueChange={switched}>
+            <SelectTrigger className="w-[250px]">
+              <SelectValue placeholder="Select a game" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Game</SelectLabel>
+                <SelectItem value="catan">Catan</SelectItem>
+                <SelectItem value="expansion-catan">Catan Expansion</SelectItem>
+                <SelectItem value="seafarers" disabled>Seafarers</SelectItem>
+                <SelectItem value="expansion-seafarers" disabled>Seafarers Expansion</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           </div>
           <Button className='dark bg-neutral-900 text-neutral-200 hover:bg-neutral-900 border-none px-0 font-normal' variant="link" onClick={handleClick}>generate catan board</Button>
         </div> 
@@ -129,7 +144,7 @@ export default function Home() {
               }
             </div>
             {
-              mode == false && 
+              mode == 'expansion-catan' && 
               <div className="flex-col justify-start items-start gap-1.5 inline-flex">
                 {
                   row4.map((item, index) => {
@@ -139,7 +154,7 @@ export default function Home() {
               </div>
             }
             {
-              mode == false && 
+              mode == 'expansion-catan' && 
               <div className="flex-col justify-start items-start gap-1.5 inline-flex">
                 {
                   row5.map((item, index) => {
