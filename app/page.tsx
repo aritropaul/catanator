@@ -20,35 +20,35 @@ export default function Home() {
   const [mode, setMode] = useState(true)
   const mapData = [
     {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1},
-    {type: "Placeholder", num: -1}]
+    {type: "Placeholder", num: -2},
+    {type: "Placeholder", num: -3},
+    {type: "Placeholder", num: -4},
+    {type: "Placeholder", num: -5},
+    {type: "Placeholder", num: -6},
+    {type: "Placeholder", num: -7},
+    {type: "Placeholder", num: -8},
+    {type: "Placeholder", num: -9},
+    {type: "Placeholder", num: -10},
+    {type: "Placeholder", num: -11},
+    {type: "Placeholder", num: -12},
+    {type: "Placeholder", num: -13},
+    {type: "Placeholder", num: -14},
+    {type: "Placeholder", num: -15},
+    {type: "Placeholder", num: -16},
+    {type: "Placeholder", num: -17},
+    {type: "Placeholder", num: -18},
+    {type: "Placeholder", num: -19},
+    {type: "Placeholder", num: -20},
+    {type: "Placeholder", num: -21},
+    {type: "Placeholder", num: -22},
+    {type: "Placeholder", num: -23},
+    {type: "Placeholder", num: -24},
+    {type: "Placeholder", num: -25},
+    {type: "Placeholder", num: -26},
+    {type: "Placeholder", num: -27},
+    {type: "Placeholder", num: -28},
+    {type: "Placeholder", num: -29},
+    {type: "Placeholder", num: -30}]
 
   const [row1, setRow1] = useState(mapData.slice(0,3))
   const [row2, setRow2] = useState(mapData.slice(3,7))
@@ -71,22 +71,24 @@ export default function Home() {
   }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const newData = generateMap(mode)
-    if (mode == true) {
-      setRow1(newData[0])
-      setRow2(newData[1])
-      setRow3(newData[2])
-      setRow6(newData[3])
-      setRow7(newData[4])
-    }
-    if (mode == false) {
-      setRow1(newData[0])
-      setRow2(newData[1])
-      setRow3(newData[2])
-      setRow4(newData[3])
-      setRow5(newData[4])
-      setRow6(newData[5])
-      setRow7(newData[6])
+    const newData = generateMap(mode) || []
+    if (newData.length > 0) {
+      if (mode == true) {
+        setRow1(newData[0])
+        setRow2(newData[1])
+        setRow3(newData[2])
+        setRow6(newData[3])
+        setRow7(newData[4])
+      }
+      if (mode == false) {
+        setRow1(newData[0])
+        setRow2(newData[1])
+        setRow3(newData[2])
+        setRow4(newData[3])
+        setRow5(newData[4])
+        setRow6(newData[5])
+        setRow7(newData[6])
+      }
     }
   }
   
@@ -107,22 +109,22 @@ export default function Home() {
           <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 md:space-x-[-20px] space-x-[-12px]">
             <div className="flex-col justify-start items-start gap-1.5 inline-flex">
               {
-                row1.map((item) => {
-                  return (<Tile key={mapData.indexOf(item)} tile={item.type} num={item.num}></Tile>)
+                row1.map((item, index) => {
+                  return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
                 })
               }
             </div>
             <div className="flex-col justify-start items-start gap-1.5 inline-flex">
               {
-                row2.map((item) => {
-                  return (<Tile key={mapData.indexOf(item)} tile={item.type} num={item.num}></Tile>)
+                row2.map((item, index) => {
+                  return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
                 })
               }
             </div>
             <div className="flex-col justify-start items-start gap-1.5 inline-flex">
               {
-                row3.map((item) => {
-                  return (<Tile key={mapData.indexOf(item)} tile={item.type} num={item.num}></Tile>)
+                row3.map((item, index) => {
+                  return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
                 })
               }
             </div>
@@ -130,8 +132,8 @@ export default function Home() {
               mode == false && 
               <div className="flex-col justify-start items-start gap-1.5 inline-flex">
                 {
-                  row4.map((item) => {
-                    return (<Tile key={mapData.indexOf(item)} tile={item.type} num={item.num}></Tile>)
+                  row4.map((item, index) => {
+                    return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
                   })
                 }
               </div>
@@ -140,8 +142,8 @@ export default function Home() {
               mode == false && 
               <div className="flex-col justify-start items-start gap-1.5 inline-flex">
                 {
-                  row5.map((item) => {
-                    return (<Tile key={mapData.indexOf(item)} tile={item.type} num={item.num}></Tile>)
+                  row5.map((item, index) => {
+                    return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
                   })
                 }
               </div>
@@ -149,8 +151,8 @@ export default function Home() {
             {
               <div className="flex-col justify-start items-start gap-1.5 inline-flex">
                 {
-                  row6.map((item) => {
-                    return (<Tile key={mapData.indexOf(item)} tile={item.type} num={item.num}></Tile>)
+                  row6.map((item, index) => {
+                    return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
                   })
                 }
                 </div>
@@ -158,8 +160,8 @@ export default function Home() {
             {
               <div className="flex-col justify-start items-start gap-1.5 inline-flex">
                 {
-                  row7.map((item) => {
-                    return (<Tile key={mapData.indexOf(item)} tile={item.type} num={item.num}></Tile>)
+                  row7.map((item, index) => {
+                    return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
                   })
                 }
                 </div>

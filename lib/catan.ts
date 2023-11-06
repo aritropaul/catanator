@@ -15,6 +15,7 @@ function shuffleArray(array: any[]) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
+
 }
 
 function mergeShuffledArraysIntoObjectArray(keys: string[], values: any[]): { type: string; num: any }[] {
@@ -28,12 +29,47 @@ function mergeShuffledArraysIntoObjectArray(keys: string[], values: any[]): { ty
     }, []);
 }
   
+function hasNeighbouring6or8(arr: any[]) {
+    let offsets = [[-1, -1], [-1, 0], [0, -1], [0, 1], [1, -1], [1, 0]];
+
+    for(let i = 0; i < arr.length; i++) {
+        for(let j = 0; j < arr[i].length; j++) {
+            if(arr[i][j].num === 6 || arr[i][j].num === 8) {
+                for(let k = 0; k < offsets.length; k++) {
+                    let ni = i + offsets[k][0];
+                    let nj = j + offsets[k][1];
+                    if(ni >= 0 && ni < arr.length && nj >= 0 && nj < arr[ni].length) {
+                        if(arr[ni][nj].num === 6 || arr[ni][nj].num === 8) {
+                            // console.log(`Element ${arr[i][j]} at (${i}, ${j}) has a neighboring 6 or 8 at (${ni}, ${nj}).`);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
+function genMap(mergedObjectArray:{ type: string; num: any }[],type: Boolean) {
+    shuffleArray(mergedObjectArray)
+    var mapDictionary = []
+    if (type == true) {
+        mapDictionary = [mergedObjectArray.slice(0,3),mergedObjectArray.slice(3,7),mergedObjectArray.slice(7,12), mergedObjectArray.slice(12,16),mergedObjectArray.slice(16,19)]
+        
+    }
+    else {
+        mapDictionary = [mergedObjectArray.slice(0,3),mergedObjectArray.slice(3,7),mergedObjectArray.slice(7,12),mergedObjectArray.slice(12,18),mergedObjectArray.slice(18,23), mergedObjectArray.slice(23,27), mergedObjectArray.slice(27,30)]
+    }
+    return mapDictionary
+}
+   
 
 export function generateMap(type: Boolean) {
-    console.log(type)
-    var mapDictionary = []
+    // console.log(type)
     var res:string[] = []
     var nums:number[] = []
+    var mapDictionary:{ type: string; num: any }[][] = []
     if (type == true) {
         res = normalMap.resources
         nums = normalMap.numbers
@@ -52,14 +88,14 @@ export function generateMap(type: Boolean) {
         mergedObjectArray.push({type: expandedMap.desert, num: -1})
         mergedObjectArray.push({type: expandedMap.desert, num: -1})
     }
-    shuffleArray(mergedObjectArray)
+    
     console.log(mergedObjectArray);
-    if (type == true) {
-        mapDictionary = [mergedObjectArray.slice(0,3),mergedObjectArray.slice(3,7),mergedObjectArray.slice(7,12), mergedObjectArray.slice(12,16),mergedObjectArray.slice(16,19)]
+    do {
+        shuffleArray(mergedObjectArray)
+        mapDictionary = genMap(mergedObjectArray, type)
+        // console.log(hasNeighbouring6or8(mapDictionary))
     }
-    else {
-        mapDictionary = [mergedObjectArray.slice(0,3),mergedObjectArray.slice(3,7),mergedObjectArray.slice(7,12),mergedObjectArray.slice(12,18),mergedObjectArray.slice(18,23), mergedObjectArray.slice(23,27), mergedObjectArray.slice(27,30)]
-    }
+    while (hasNeighbouring6or8(mapDictionary) == true)
     console.log(mapDictionary)
     return mapDictionary
 }
