@@ -16,15 +16,20 @@ import { useEffect, useState } from 'react';
 import { generateMap } from '@/lib/catan';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { shareCode } from '@/lib/share';
+import { useRouter } from 'next/navigation';
 
 interface TileType {
   type: String
   num: Number
 }
 
+
 export default function Home() {
 
-  const [mode, setMode] = useState("")
+  const [mode, setMode] = useState('catan')
+  const router = useRouter()
+  
   const mapData = [
     {type: "Placeholder", num: -1},
     {type: "Placeholder", num: -2},
@@ -77,25 +82,8 @@ export default function Home() {
   }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const newData = generateMap(mode) || []
-    if (newData.length > 0) {
-      if (mode == 'catan') {
-        setRow1(newData[0])
-        setRow2(newData[1])
-        setRow3(newData[2])
-        setRow6(newData[3])
-        setRow7(newData[4])
-      }
-      if (mode == 'expansion-catan') {
-        setRow1(newData[0])
-        setRow2(newData[1])
-        setRow3(newData[2])
-        setRow4(newData[3])
-        setRow5(newData[4])
-        setRow6(newData[5])
-        setRow7(newData[6])
-      }
-    }
+    let code = shareCode(generateMap(mode))
+    router.push('/'+code)
   }
   
   return (
@@ -103,7 +91,7 @@ export default function Home() {
       <div className="lg:w-[600px] w-[390px] md:w-[480px]">
         <div className='md:inline-flex items-center justify-between w-full text-white font-normal md:px-0 px-4'>
           <div className="flex items-center space-x-2 text">
-          <Select onValueChange={switched}>
+          <Select onValueChange={switched} defaultValue='catan'>
             <SelectTrigger className="w-[250px]">
               <SelectValue placeholder="Select a game" />
             </SelectTrigger>
