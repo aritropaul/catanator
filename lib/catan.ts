@@ -1,3 +1,4 @@
+
 const normalMap = {
     resources: ['Forests','Forests','Forests','Forests','Hills','Hills','Hills','Mountains','Mountains','Mountains','Fields','Fields','Fields','Fields','Pasture','Pasture','Pasture','Pasture'],
     desert: 'Desert',
@@ -8,6 +9,12 @@ const expandedMap = {
     resources: ['Forests','Forests','Forests','Forests', 'Forests', 'Forests','Hills','Hills','Hills', 'Hills','Hills', 'Mountains','Mountains','Mountains', 'Mountains', 'Mountains', 'Fields','Fields','Fields','Fields','Fields','Fields', 'Pasture','Pasture','Pasture','Pasture', 'Pasture','Pasture'],
     desert: 'Desert',
     numbers: [2,2,3,3,3,4,4,4,5,5,5,6,6,6,8,8,8,9,9,9,10,10,10,11,11,11,12,12]
+}
+
+const seafarersMap = {
+    resources: ['Forests','Forests','Forests','Forests','Hills','Hills','Hills','Mountains','Mountains','Mountains','Fields','Fields','Fields','Fields','Pasture','Pasture','Pasture','Pasture'],
+    desert: 'Desert',
+    numbers: [2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12]
 }
 
 function shuffleArray(array: any[]) {
@@ -53,13 +60,14 @@ function hasNeighbouring6or8(arr: any[]) {
 
 function genMap(mergedObjectArray:{ type: string; num: any }[],type: String) {
     shuffleArray(mergedObjectArray)
+    let mapData = mergedObjectArray
     var mapDictionary: { type: string; num: any; }[][] = []
     if (type == 'catan') {
-        mapDictionary = [mergedObjectArray.slice(0,3),mergedObjectArray.slice(3,7),mergedObjectArray.slice(7,12), mergedObjectArray.slice(12,16),mergedObjectArray.slice(16,19)]
+        mapDictionary = [mapData.slice(0,3),mapData.slice(3,7),mapData.slice(7,12), mapData.slice(12,16),mapData.slice(16,19)]
         
     }
     else if (type == 'expansion-catan') {
-        mapDictionary = [mergedObjectArray.slice(0,3),mergedObjectArray.slice(3,7),mergedObjectArray.slice(7,12),mergedObjectArray.slice(12,18),mergedObjectArray.slice(18,23), mergedObjectArray.slice(23,27), mergedObjectArray.slice(27,30)]
+        mapDictionary = [mapData.slice(0,3),mapData.slice(3,7),mapData.slice(7,12),mapData.slice(12,18),mapData.slice(18,23), mergedObjectArray.slice(23,27), mergedObjectArray.slice(27,30)]
     }
     return mapDictionary
 }
@@ -88,14 +96,27 @@ export function generateMap(type: String) {
         mergedObjectArray.push({type: expandedMap.desert, num: -1})
         mergedObjectArray.push({type: expandedMap.desert, num: -1})
     }
-    
+
     console.log(mergedObjectArray);
     do {
         shuffleArray(mergedObjectArray)
         mapDictionary = genMap(mergedObjectArray, type)
-        // console.log(hasNeighbouring6or8(mapDictionary))
     }
     while (hasNeighbouring6or8(mapDictionary) == true)
     console.log(mapDictionary)
     return mapDictionary
+}
+
+export function generatePorts(type: string): {type: string}[] {
+    if (type == 'catan') {
+        let ports = [{type: '3'}, {type: '3'}, {type: '3'}, {type: '3'}, {type: 'H'}, {type: 'W'}, {type: 'B'}, {type: 'S'}, {type: 'O'}]
+        shuffleArray(ports)
+        return ports
+    }
+    else if (type == 'expansion-catan') {
+        let ports = ([{type: '3'}, {type: '3'}, {type: '3'}, {type: '3'}, {type: '3'}, {type: '3'}, {type: 'H'}, {type: 'W'}, {type: 'B'}, {type: 'S'}, {type: 'O'}])
+        shuffleArray(ports)
+        return ports
+    }
+    return [{type: '3'}, {type: '3'}, {type: '3'}, {type: '3'}, {type: 'H'}, {type: 'W'}, {type: 'B'}, {type: 'S'}, {type: 'O'}]
 }

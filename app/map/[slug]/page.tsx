@@ -11,14 +11,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Tile } from '@/components/ui/tile'
 import { useEffect, useState } from 'react';
-import { generateMap } from '@/lib/catan';
+import { generateMap, generatePorts } from '@/lib/catan';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import Map from '@/components/ui/map';
+import Map from '@/components/ui/maps/catan';
 import { rebuildFrom, shareCode } from '@/lib/share';
 import { useRouter } from 'next/navigation';
+import CatanMap from '@/components/ui/maps/catan';
+import CatanExpMap from '@/components/ui/maps/catanexp';
+import { basePorts } from '@/components/ui/port';
 
 interface TileType {
     type: string;
@@ -28,19 +30,20 @@ interface TileType {
 export default function Page({ params }: { params: { slug: string } }){
 
   const [mode, setMode] = useState('')
-  const [data, setData] = useState(rebuildFrom(params.slug).flat())
+  const [data, setData] = useState(rebuildFrom(params.slug).rows.flat())
+  const [ports, setPorts] = useState(rebuildFrom(params.slug).ports)
   const router = useRouter()
   
   function switched(mode: string) {
     setMode(mode)
     let data = generateMap(mode)
-    let code = shareCode(data)
-    router.push('/'+code)
+    let code = shareCode(data, generatePorts(mode))
+    router.push('/map/'+code)
   }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    let code = shareCode(generateMap(getMode()))
-    router.push('/'+code)
+    let code = shareCode(generateMap(getMode()), generatePorts(getMode()))
+    router.push('/map/'+code)
   }
 
   function getMode() {
@@ -61,10 +64,10 @@ export default function Page({ params }: { params: { slug: string } }){
     }, [])
   
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between md:p-24 p-12 bg-neutral-900">
-      <div className="lg:w-[600px] w-[390px] md:w-[480px]">
-        <div className='md:inline-flex items-center justify-between w-full text-white font-normal md:px-0 px-4'>
-          <div className="flex items-center space-x-2 text">
+    <main className="flex min-h-screen w-fit lg:w-full flex-col items-center justify-between p-12 bg-neutral-900">
+      <div className="w-fit lg:w-[600px]x">
+        <div className='md:inline-block items-center justify-between w-full text-white font-normal md:px-0 px-4'>
+          <div className="sticky left-2 top-2 flex items-center space-x-2 text">
           <Select onValueChange={switched} defaultValue={getMode()}>
             <SelectTrigger className="w-[250px]">
               <SelectValue placeholder="Select a game" />
@@ -82,7 +85,14 @@ export default function Page({ params }: { params: { slug: string } }){
           </div>
           <Button className='dark bg-neutral-900 text-neutral-200 hover:bg-neutral-900 border-none px-0 font-normal' variant="link" onClick={handleClick}>generate catan board</Button>
         </div> 
-        <Map mode={getMode()} data={data}></Map>
+        {
+          getMode() == 'catan' &&
+          <CatanMap mode={'catan'} data={data} ports={ports}></CatanMap>
+        }
+        {
+          getMode() == 'expansion-catan' &&
+          <CatanExpMap mode={'expansion-catan'} data={data} ports={ports}></CatanExpMap>
+        }
       </div>
       <div className='footer text-xs bottom-20 text-neutral-600'>Built with 🤍 by <Link className='text-neutral-200 underline' href={'https://aritro.xyz'}>aritro</Link></div>
     </main>

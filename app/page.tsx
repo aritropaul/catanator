@@ -13,11 +13,15 @@ import {
 } from "@/components/ui/select"
 import { Tile } from '@/components/ui/tile'
 import { useEffect, useState } from 'react';
-import { generateMap } from '@/lib/catan';
+import { generateMap, generatePorts } from '@/lib/catan';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { shareCode } from '@/lib/share';
 import { useRouter } from 'next/navigation';
+import Map from '@/components/ui/maps/catan';
+import CatanMap from '@/components/ui/maps/catan';
+import CatanExpMap from '@/components/ui/maps/catanexp';
+import { basePorts } from '@/components/ui/port';
 
 interface TileType {
   type: String
@@ -62,33 +66,24 @@ export default function Home() {
     {type: "Placeholder", num: -29},
     {type: "Placeholder", num: -30}]
 
-  const [row1, setRow1] = useState(mapData.slice(0,3))
-  const [row2, setRow2] = useState(mapData.slice(3,7))
-  const [row3, setRow3] = useState(mapData.slice(7,12))
-  const [row4, setRow4] = useState(mapData.slice(12,18))
-  const [row5, setRow5] = useState(mapData.slice(18,23))
-  const [row6, setRow6] = useState(mapData.slice(23,27))
-  const [row7, setRow7] = useState(mapData.slice(27,30))
+    useEffect(() => {
+      let code = shareCode(generateMap(mode), generatePorts(mode))
+      router.push('/map/'+code)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
   function switched(mode: string) {
       setMode(mode)
-      setRow1(mapData.slice(0,3))
-      setRow2(mapData.slice(3,7))
-      setRow3(mapData.slice(7,12))
-      setRow4(mapData.slice(12,18))
-      setRow5(mapData.slice(18,23))
-      setRow6(mapData.slice(23,27))
-      setRow7(mapData.slice(27,30))
   }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    let code = shareCode(generateMap(mode))
-    router.push('/'+code)
+    let code = shareCode(generateMap(mode), generatePorts(mode))
+    router.push('/map/'+code)
   }
   
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between md:p-24 p-12 bg-neutral-900">
-      <div className="lg:w-[600px] w-[390px] md:w-[480px]">
+    <main className="flex min-h-screen w-full flex-col items-center justify-between md:p-24 p-12 bg-neutral-900">
+      <div className="lg:w-[800px] w-[480px] md:w-[600px]">
         <div className='md:inline-flex items-center justify-between w-full text-white font-normal md:px-0 px-4'>
           <div className="flex items-center space-x-2 text">
           <Select onValueChange={switched} defaultValue='catan'>
@@ -108,69 +103,14 @@ export default function Home() {
           </div>
           <Button className='dark bg-neutral-900 text-neutral-200 hover:bg-neutral-900 border-none px-0 font-normal' variant="link" onClick={handleClick}>generate catan board</Button>
         </div> 
-        <div className="w-full pt-20 pb-12 justify-center items-center inline-flex">
-          <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 md:space-x-[-20px] space-x-[-12px]">
-            <div className="flex-col justify-start items-start gap-1.5 inline-flex">
-              {
-                row1.map((item, index) => {
-                  return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
-                })
-              }
-            </div>
-            <div className="flex-col justify-start items-start gap-1.5 inline-flex">
-              {
-                row2.map((item, index) => {
-                  return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
-                })
-              }
-            </div>
-            <div className="flex-col justify-start items-start gap-1.5 inline-flex">
-              {
-                row3.map((item, index) => {
-                  return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
-                })
-              }
-            </div>
-            {
-              mode == 'expansion-catan' && 
-              <div className="flex-col justify-start items-start gap-1.5 inline-flex">
-                {
-                  row4.map((item, index) => {
-                    return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
-                  })
-                }
-              </div>
-            }
-            {
-              mode == 'expansion-catan' && 
-              <div className="flex-col justify-start items-start gap-1.5 inline-flex">
-                {
-                  row5.map((item, index) => {
-                    return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
-                  })
-                }
-              </div>
-            }
-            {
-              <div className="flex-col justify-start items-start gap-1.5 inline-flex">
-                {
-                  row6.map((item, index) => {
-                    return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
-                  })
-                }
-                </div>
-            }
-            {
-              <div className="flex-col justify-start items-start gap-1.5 inline-flex">
-                {
-                  row7.map((item, index) => {
-                    return (<Tile key={index} tile={item.type} num={item.num}></Tile>)
-                  })
-                }
-                </div>
-            }
-          </div>
-        </div>
+        {
+          mode == 'catan' &&
+          <CatanMap mode={'catan'} data={generateMap(mode).flat()} ports={generatePorts(mode)}></CatanMap>
+        }
+        {
+          mode == 'expansion-catan' &&
+          <CatanExpMap mode={'expansion-catan'} data={generateMap(mode).flat()} ports={generatePorts(mode)}></CatanExpMap>
+        }
       </div>
       <div className='footer text-xs bottom-20 text-neutral-600'>Built with 🤍 by <Link className='text-neutral-200 underline' href={'https://aritro.xyz'}>aritro</Link></div>
     </main>
