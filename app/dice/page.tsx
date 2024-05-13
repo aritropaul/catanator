@@ -11,12 +11,14 @@ export default function Page(){
   const [rolls, setRolls] = useState(7);
   const [data, setData] = useState([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ])
   const [pools, setPools] = useState(generatePool())
+  const [way, setWay] = useState('3,4')
 
   function handleRoll() {
       let roll = diceRoll(pools)
       console.log(roll)
       setRolls(roll.randomRoll)
       setPools(roll.pool)
+      setWay(roll.randomWay)
       if (pools.length < 10) {
         setPools(generatePool())
       }
@@ -28,8 +30,9 @@ export default function Page(){
         <div className='md:inline-block items-center justify-between w-full text-neutral-200 font-normal md:px-0 px-4'>
           <div className='w-full text-sm font-normal text-neutral-200 items-center justify-between text-center'>You rolled</div>
           <div className='text-[72px] items-center justify-between w-full text-neutral-200 text-center font-normal md:px-0 px-4'>
-            {/* { rolls[0] } , { rolls[1] } */ rolls}
+            {rolls}
           </div>
+          <div className='text-lg text-neutral-500 items-center text-center'> <span className='text-red-500'>{way.split(',')[0]}</span> , {way.split(',')[1]}</div>
           <Button className='dark w-full bg-neutral-900 text-neutral-200 hover:bg-neutral-900 border-none px-0 font-normal' onClick={handleRoll} variant="link">
             next roll
           </Button>
