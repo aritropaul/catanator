@@ -35,9 +35,4 @@ function diceRoll(pool: number[]) {
     return {randomRoll , pool, randomWay}
 }
 
-function dieRolls(times: number) {
-    generatePool()
-    // console.log()
-}
-
-export  { generatePool, diceRoll, dieRolls }
+export  { generatePool, diceRoll }

@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react"
 import { Tile } from "../tile"
 import Port from "../port";
-import { generatePorts } from "@/lib/catan";
 
 interface TileType {
     type: string;
@@ -14,31 +12,27 @@ interface PortType {
   type: string;
 }
 
-type MapProps = {mode: string, data: TileType[], ports: PortType[]}
+type MapProps = {
+  mode: string,
+  data: TileType[],
+  ports: PortType[],
+  onTileClick?: (index: number) => void,
+  selectedTile?: number | null
+}
 
 export default function Map(props: MapProps) {
+    const mapData = props.data
+    const portData = props.ports
 
-    let mapData = props.data
-    let portData = props.ports
-    console.log(portData)
-    
-    const [row1, setRow1] = useState(mapData.slice(0,3))
-    const [row2, setRow2] = useState(mapData.slice(3,7))
-    const [row3, setRow3] = useState(mapData.slice(7,12))
-    const [row4, setRow4] = useState(mapData.slice(12,16))
-    const [row5, setRow5] = useState(mapData.slice(16,19))
+    const row1 = mapData.slice(0,3)
+    const row2 = mapData.slice(3,7)
+    const row3 = mapData.slice(7,12)
+    const row4 = mapData.slice(12,16)
+    const row5 = mapData.slice(16,19)
 
-    useEffect(() => {
-        // The code here will run when the component mounts
-      setRow1(mapData.slice(0,3))
-      setRow2(mapData.slice(3,7))
-      setRow3(mapData.slice(7,12))
-      setRow4(mapData.slice(12,16))
-      setRow5(mapData.slice(16,19))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); // The empty array causes this effect to only run on mount
-    
-
+    function tileClick(index: number) {
+        if (props.onTileClick) props.onTileClick(index)
+    }
 
     return(
     <div className="w-full pt-20 pb-12 justify-center items-center inline-flex">
@@ -53,7 +47,7 @@ export default function Map(props: MapProps) {
             <Tile  tile={'Placeholder'} num={"-1"}></Tile>
               {
                 row1.map((item, index) => {
-                  return (<Tile key={index} tile={item.type} num={item.num.toString()}></Tile>)
+                  return (<Tile key={index} tile={item.type} num={item.num.toString()} index={index} onClick={() => tileClick(index)} selected={props.selectedTile === index}></Tile>)
                 })
               }
             <Port type={portData[2].type} position={"1"}></Port>
@@ -62,7 +56,7 @@ export default function Map(props: MapProps) {
             <Port type={portData[3].type} position={"3"}></Port>
               {
                 row2.map((item, index) => {
-                  return (<Tile key={index} tile={item.type} num={item.num.toString()}></Tile>)
+                  return (<Tile key={index} tile={item.type} num={item.num.toString()} index={3 + index} onClick={() => tileClick(3 + index)} selected={props.selectedTile === 3 + index}></Tile>)
                 })
               }
             <Tile  tile={'Placeholder'} num={"-1"}></Tile>
@@ -71,7 +65,7 @@ export default function Map(props: MapProps) {
             <Tile  tile={'Placeholder'} num={"-1"}></Tile>
               {
                 row3.map((item, index) => {
-                  return (<Tile key={index} tile={item.type} num={item.num.toString()}></Tile>)
+                  return (<Tile key={index} tile={item.type} num={item.num.toString()} index={7 + index} onClick={() => tileClick(7 + index)} selected={props.selectedTile === 7 + index}></Tile>)
                 })
               }
             <Port type={portData[4].type} position={"6"}></Port>
@@ -80,7 +74,7 @@ export default function Map(props: MapProps) {
               <Port type={portData[5].type} position={"3"}></Port>
               {
                 row4.map((item, index) => {
-                  return (<Tile key={index} tile={item.type} num={item.num.toString()}></Tile>)
+                  return (<Tile key={index} tile={item.type} num={item.num.toString()} index={12 + index} onClick={() => tileClick(12 + index)} selected={props.selectedTile === 12 + index}></Tile>)
                 })
               }
               <Tile  tile={'Placeholder'} num={"-1"}></Tile>
@@ -89,7 +83,7 @@ export default function Map(props: MapProps) {
               <Tile  tile={'Placeholder'} num={"-1"}></Tile>
               {
                 row5.map((item, index) => {
-                  return (<Tile key={index} tile={item.type} num={item.num.toString()}></Tile>)
+                  return (<Tile key={index} tile={item.type} num={item.num.toString()} index={16 + index} onClick={() => tileClick(16 + index)} selected={props.selectedTile === 16 + index}></Tile>)
                 })
               }
               <Port type={portData[6].type} position={"5"}></Port>
